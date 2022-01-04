@@ -15,3 +15,4 @@ lnrpc/*.js
 lnrpc/*.d.ts
 node_modules
 mongo.pem
+lib

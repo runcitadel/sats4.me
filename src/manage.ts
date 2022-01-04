@@ -1,7 +1,7 @@
 import * as path from "path";
 import * as fs from "@runcitadel/fs";
 import { MongoClient } from "mongodb";
-import LNDService from "./lightning";
+import LNDService from "./lightning.js";
 
 const credentials = "/root/lightning-api/mongo.pem";
 

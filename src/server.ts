@@ -3,32 +3,8 @@ import Router from "@koa/router";
 import fetch from "node-fetch";
 import SocksProxyAgentPkg from "socks-proxy-agent";
 const SocksProxyAgent = SocksProxyAgentPkg.SocksProxyAgent;
-import * as https from "https";
-import * as fs from "fs";
 import * as mainLogic from "./manage.js";
 import bodyParser from "koa-body";
-
-const config = {
-  domain: "ln.runcitadel.space",
-  https: {
-    port: 443,
-    options: {
-      key: fs
-        .readFileSync(
-          "/etc/letsencrypt/live/ln.runcitadel.space/privkey.pem",
-          "utf8"
-        )
-        .toString(),
-
-      cert: fs
-        .readFileSync(
-          "/etc/letsencrypt/live/ln.runcitadel.space/fullchain.pem",
-          "utf8"
-        )
-        .toString(),
-    },
-  },
-};
 
 // Connect to the local tor daemon
 
@@ -87,9 +63,26 @@ router.post("/add-address", async (ctx, next) => {
   await next();
 });
 
+router.post("/set-onion-url", async (ctx, next) => {
+  const signature = ctx.request.body.signature;
+  const onionUrl = ctx.request.body.onionUrl;
+
+  // Validate that all 3 are present and string
+  if (
+    !signature ||
+    !onionUrl ||
+    typeof signature !== "string" ||
+    typeof onionUrl !== "string"
+  ) {
+    ctx.status = 400;
+    return;
+  }
+  const data = await mainLogic.setOnionUrl(signature, onionUrl);
+  ctx.status = data.code;
+  ctx.body = data.msg;
+  await next();
+});
+
 app.use(router.routes());
 app.use(router.allowedMethods());
-const server = https.createServer(config.https.options, app.callback());
-server.listen(443, function () {
-  console.log("Listening");
-});
+app.listen(400);
