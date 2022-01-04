@@ -20,6 +20,7 @@
     "@types/koa": "^2.13.4",
     "@types/koa-morgan": "^1.0.5",
     "@types/koa__router": "^8.0.11",
+    "@types/node": "^16",
     "ts-node": "^10.4.0",
     "ts-proto": "^1.97.0",
     "typescript": "^4.5.4"
