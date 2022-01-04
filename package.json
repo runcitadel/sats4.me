@@ -1,0 +1,28 @@
+{
+  "name": "lightning-api",
+  "packageManager": "yarn@3.1.1",
+  "scripts": {
+    "build": "tsc",
+    "build-types": "cd resources && protoc --plugin=../node_modules/.bin/protoc-gen-ts_proto --ts_proto_out=../src/lnrpc --ts_proto_opt=esModuleInterop=true --ts_proto_opt=useExactTypes=false --ts_proto_opt=outputServices=generic-definitions --ts_proto_opt=forceLong=string lightning.proto walletunlocker.proto stateservice.proto"
+  },
+  "dependencies": {
+    "@koa/router": "^10.1.1",
+    "@runcitadel/fs": "^1.0.1",
+    "koa": "^2.13.4",
+    "koa-body": "^4.2.0",
+    "koa-morgan": "^1.0.1",
+    "mongodb": "^4.2.2",
+    "nice-grpc": "^1.0.4",
+    "node-fetch": "^3.1.0",
+    "socks-proxy-agent": "^6.1.1"
+  },
+  "devDependencies": {
+    "@types/koa": "^2.13.4",
+    "@types/koa-morgan": "^1.0.5",
+    "@types/koa__router": "^8.0.11",
+    "ts-node": "^10.4.0",
+    "ts-proto": "^1.97.0",
+    "typescript": "^4.5.4"
+  },
+  "type": "module"
+}
