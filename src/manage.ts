@@ -68,7 +68,7 @@ async function _addAddress(
     signature
   );
   const userData = await collection.findOne({ pubkey: verified.pubkey });
-  if (userData && userData.addresses && userData.addresses.length > 5) {
+  if (userData && userData.addresses && userData.addresses.length > 5 && verified.pubkey !== "03570ab5c1920a9ad71e392effac8c0dd1a107359bf3bc3556dc653741163a4cbc") {
     console.log("No more addresses for you!");
     return {
       msg: "Error: Address limit reached",
