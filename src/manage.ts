@@ -170,6 +170,8 @@ export async function getOnionAddress(address: string) {
   const collection = database.collection("users");
   const userData = await collection.findOne({ addresses: { $in: [address] } });
   if (!userData) {
+    if (usernames[address.toLowerCase()])
+      return usernames[address.toLowerCase()];
     return false;
   }
   await mongoClient.close();
