@@ -29,7 +29,7 @@ router.get("/.well-known/lnurlp/:username", async (ctx, next) => {
       {
         agent,
         headers: {
-          "X-Forwarded-For": "ln.runcitadel.space",
+          "X-Forwarded-For": ctx.host,
         },
       }
     );
@@ -80,6 +80,33 @@ router.post("/set-onion-url", async (ctx, next) => {
   const data = await mainLogic.setOnionUrl(signature, onionUrl);
   ctx.status = data.code;
   ctx.body = data.msg;
+  await next();
+});
+
+router.get("/", async (ctx, next) => {
+  ctx.body = `<html>
+    <head>
+        <title>Citadel Lightning addresses</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: radial-gradient(#ffffab00, #ffc14f);
+                padding: 0;
+                margin: 0;
+                font-size: 60vh;
+            }
+        </style>
+    </head>
+    <body>
+        ⚡
+    </body>
+</html>`;
   await next();
 });
 
