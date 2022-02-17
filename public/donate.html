@@ -195,7 +195,7 @@
         amountElement.setAttribute('disabled', true);
         memoElement.setAttribute('disabled', true);
 
-        var lnme = new LnMe({ value: amountElement.value, memo: memoElement.value, target: document.getElementById('lnme-wrapper') });
+        var lnme = new LnMe({ baseURL: window.location.href, value: amountElement.value, memo: memoElement.value, target: document.getElementById('lnme-wrapper') });
 
         lnme.showPaymentRequest = function() {
           document.getElementById('send-button').style.display = 'none';
