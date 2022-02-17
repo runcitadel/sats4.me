@@ -155,6 +155,7 @@ router.post("/donate/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
       )}/v1/invoice/${invoiceid}`,
       {
         agent,
+        method: "POST",
         headers: {
           "X-Forwarded-For": ctx.host,
           "Content-Type": "application/json",
@@ -179,6 +180,7 @@ router.post("/donate/:userid/v1/invoices", async (ctx, next) => {
       )}/v1/invoices`,
       {
         agent,
+        method: "POST",
         headers: {
           "X-Forwarded-For": ctx.host,
           "Content-Type": "application/json",
@@ -203,6 +205,7 @@ router.post("/donate/:userid/v1/newaddress", async (ctx, next) => {
       )}/v1/newaddress`,
       {
         agent,
+        method: "POST",
         headers: {
           "X-Forwarded-For": ctx.host,
           "Content-Type": "application/json",

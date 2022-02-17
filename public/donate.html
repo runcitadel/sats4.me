@@ -163,7 +163,7 @@
       document.getElementById("get-new-address").addEventListener('click', function(e) {
         e.preventDefault();
         var lnme = new LnMe({
-        baseURL:  window.location.href,
+        baseURL: window.location.href,
         });
         lnme.newAddress().then(address => {
           document.getElementById("onchain").innerHTML = address;
