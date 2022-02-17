@@ -144,7 +144,7 @@ router.get("/donate/:id", async (ctx, next) => {
 });
 
 
-router.post("/donate/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
+router.get("/donate/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
   const userid = ctx.params.userid;
   const invoiceid = ctx.params.invoiceid;
   if (await mainLogic.getOnionAddress(userid)) {
@@ -155,12 +155,9 @@ router.post("/donate/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
       )}/v1/invoice/${invoiceid}`,
       {
         agent,
-        method: "POST",
         headers: {
           "X-Forwarded-For": ctx.host,
-          "Content-Type": "application/json",
         },
-        body: JSON.stringify(ctx.request.body),
       }
     );
     ctx.body = await apiResponse.text();
