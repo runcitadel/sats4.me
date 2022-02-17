@@ -130,7 +130,7 @@ class LnMe {
     document.querySelectorAll('.lnme-link').forEach(e => {
       e.setAttribute('href', `lightning:${this.invoice.payment_request}`);
     });
-    QrCreator.render({ text: this.invoice.payment_request, size: 128}, this.target.querySelector('.lnme-qrcode'));
+    QrCreator.render({ text: this.invoice.payment_request, size: 256}, this.target.querySelector('.lnme-qrcode'));
     this.target.querySelectorAll('.lnme-copy').forEach(element => {
       element.addEventListener('click', (e) => {
         navigator.clipboard.writeText(this.invoice.payment_request).then(() => {
