@@ -5,7 +5,7 @@ import LNDService from "./lightning.js";
 
 const credentials = "/root/lightning-api/mongo.pem";
 
-const LND_DIR = "/root/core/lnd";
+const LND_DIR = process.env.LND_DIR || "/root/core/lnd";
 const TLS_FILE = path.join(LND_DIR, "tls.cert");
 const MACAROON_FILE = path.join(
   LND_DIR,
