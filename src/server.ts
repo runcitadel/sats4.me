@@ -35,7 +35,7 @@ router.get("/.well-known/lnurlp/:username", async (ctx, next) => {
         },
       }
     );
-    ctx.body = await apiResponse.json();
+    ctx.body = await apiResponse.text();
   } else {
     ctx.status = 404;
   }
@@ -163,7 +163,7 @@ router.post("/donate/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
         body: JSON.stringify(ctx.request.body),
       }
     );
-    ctx.body = await apiResponse.json();
+    ctx.body = await apiResponse.text();
   } else {
     ctx.status = 404;
   }
@@ -188,7 +188,7 @@ router.post("/donate/:userid/v1/invoices", async (ctx, next) => {
         body: JSON.stringify(ctx.request.body),
       }
     );
-    ctx.body = await apiResponse.json();
+    ctx.body = await apiResponse.text();
   } else {
     ctx.status = 404;
   }
@@ -213,7 +213,7 @@ router.post("/donate/:userid/v1/newaddress", async (ctx, next) => {
         body: JSON.stringify(ctx.request.body),
       }
     );
-    ctx.body = await apiResponse.json();
+    ctx.body = await apiResponse.text();
   } else {
     ctx.status = 404;
   }
