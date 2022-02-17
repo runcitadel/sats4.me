@@ -5,7 +5,9 @@ import SocksProxyAgentPkg from "socks-proxy-agent";
 const SocksProxyAgent = SocksProxyAgentPkg.SocksProxyAgent;
 import * as mainLogic from "./manage.js";
 import bodyParser from "koa-body";
-
+import * as fs from "fs";
+import * as path from "path";
+import * as url from "url";
 // Connect to the local tor daemon
 
 const proxy = process.env.socks_proxy || "socks5h://127.0.0.1:9050";
@@ -107,6 +109,111 @@ router.get("/", async (ctx, next) => {
         ⚡
     </body>
 </html>`;
+  await next();
+});
+
+// get path from import.meta.url
+const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
+const donateCss = fs.readFileSync(path.join(__dirname, "..", "public", "donate.css"), "utf8");
+const donateHtml = fs.readFileSync(path.join(__dirname, "..", "public", "donate.html"), "utf8");
+const donateJs = fs.readFileSync(path.join(__dirname, "..", "public", "donate.js"), "utf8");
+const lnmeSvg = fs.readFileSync(path.join(__dirname, "..", "public", "lnme.svg"), "utf8");
+
+router.get("/lnme.svg", async (ctx, next) => {
+  ctx.body = lnmeSvg;
+  ctx.type = "image/svg+xml";
+  await next();
+});
+
+router.get("/donate.css", async (ctx, next) => {
+  ctx.body = donateCss;
+  ctx.type = "text/css";
+  await next();
+});
+
+router.get("/donate.js", async (ctx, next) => {
+  ctx.body = donateJs;
+  ctx.type = "application/javascript";
+  await next();
+});
+
+router.get("/donate/:id", async (ctx, next) => {
+  ctx.body = donateHtml;
+  ctx.type = "text/html";
+  await next();
+});
+
+
+router.post("/donate/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
+  const userid = ctx.params.userid;
+  const invoiceid = ctx.params.invoiceid;
+  if (await mainLogic.getOnionAddress(userid)) {
+    // send a request to the users onion
+    const apiResponse = await fetch(
+      `http://${await mainLogic.getOnionAddress(
+        userid
+      )}/v1/invoice/${invoiceid}`,
+      {
+        agent,
+        headers: {
+          "X-Forwarded-For": ctx.host,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(ctx.request.body),
+      }
+    );
+    ctx.body = await apiResponse.json();
+  } else {
+    ctx.status = 404;
+  }
+  await next();
+});
+
+router.post("/donate/:userid/v1/invoices", async (ctx, next) => {
+  const userid = ctx.params.userid;
+  if (await mainLogic.getOnionAddress(userid)) {
+    // send a request to the users onion
+    const apiResponse = await fetch(
+      `http://${await mainLogic.getOnionAddress(
+        userid
+      )}/v1/invoices`,
+      {
+        agent,
+        headers: {
+          "X-Forwarded-For": ctx.host,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(ctx.request.body),
+      }
+    );
+    ctx.body = await apiResponse.json();
+  } else {
+    ctx.status = 404;
+  }
+  await next();
+});
+
+router.post("/donate/:userid/v1/newaddress", async (ctx, next) => {
+  const userid = ctx.params.userid;
+  if (await mainLogic.getOnionAddress(userid)) {
+    // send a request to the users onion
+    const apiResponse = await fetch(
+      `http://${await mainLogic.getOnionAddress(
+        userid
+      )}/v1/newaddress`,
+      {
+        agent,
+        headers: {
+          "X-Forwarded-For": ctx.host,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(ctx.request.body),
+      }
+    );
+    ctx.body = await apiResponse.json();
+  } else {
+    ctx.status = 404;
+  }
   await next();
 });
 
