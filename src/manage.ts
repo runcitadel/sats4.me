@@ -3,7 +3,7 @@ import * as fs from "@runcitadel/fs";
 import { MongoClient } from "mongodb";
 import LNDService from "./lightning.js";
 
-const credentials = "/root/lightning-api/mongo.pem";
+const credentials = process.env.CREDENTIALS_FILE || "/root/lightning-api/mongo.pem";
 
 const LND_DIR = process.env.LND_DIR || "/root/core/lnd";
 const TLS_FILE = path.join(LND_DIR, "tls.cert");
