@@ -8,7 +8,7 @@ import bodyParser from "koa-body";
 
 // Connect to the local tor daemon
 
-const proxy = process.env.socks_proxy || "socks5h://127.0.0.1:9050";
+const proxy = process.env.SOCKS_PROXY || "socks5h://127.0.0.1:9050";
 const app = new Koa();
 const router = new Router();
 router.use(bodyParser());
