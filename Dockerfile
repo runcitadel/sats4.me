@@ -39,6 +39,9 @@ COPY --from=manager-builder /app/lib /app/lib
 # Copy node_modules
 COPY --from=build-dependencies-helper /app/node_modules /app/node_modules
 
+# Copy package.json do node knows this is an ES module
+COPY package.json /app/
+
 # Change directory to '/app'
 WORKDIR /app
 
