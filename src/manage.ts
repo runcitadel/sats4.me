@@ -21,7 +21,7 @@ const lightningClient = new LNDService(
   MACAROON_FILE
 );
 // Connection URI
-const uri =
+const uri = process.env.DB_CONNECTION_URI ||
   "mongodb+srv://cluster0.iwoen.mongodb.net/myFirstDatabase?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority";
 // Create a new MongoClient
 const mongoClient = new MongoClient(uri, {
