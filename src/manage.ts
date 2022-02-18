@@ -16,7 +16,7 @@ const MACAROON_FILE = path.join(
   "admin.macaroon"
 );
 const lightningClient = new LNDService(
-  "http://localhost:10009",
+  process.env.LND_URL || "http://localhost:10009",
   fs.readFileSync(TLS_FILE),
   MACAROON_FILE
 );
