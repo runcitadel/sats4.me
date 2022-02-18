@@ -118,6 +118,7 @@ const donateCss = fs.readFileSync(path.join(__dirname, "..", "public", "donate.c
 const donateHtml = fs.readFileSync(path.join(__dirname, "..", "public", "donate.html"), "utf8");
 const donateJs = fs.readFileSync(path.join(__dirname, "..", "public", "donate.js"), "utf8");
 const lnmeSvg = fs.readFileSync(path.join(__dirname, "..", "public", "lnme.svg"), "utf8");
+const notFoundHtml = fs.readFileSync(path.join(__dirname, "..", "public", "notfound.html"), "utf8");
 
 router.get("/lnme.svg", async (ctx, next) => {
   ctx.body = lnmeSvg;
@@ -138,7 +139,12 @@ router.get("/donate.js", async (ctx, next) => {
 });
 
 router.get("/donate/:id", async (ctx, next) => {
-  ctx.body = donateHtml;
+  if(await mainLogic.getOnionAddress(username)) {
+    ctx.body = donateHtml;
+  } else {
+    ctx.status = 404;
+    ctx.body = notFoundHtml;
+  }  
   ctx.type = "text/html";
   await next();
 });
