@@ -139,7 +139,7 @@ router.get("/donate.js", async (ctx, next) => {
 });
 
 router.get("/donate/:id", async (ctx, next) => {
-  if(await mainLogic.getOnionAddress(username)) {
+  if(await mainLogic.getOnionAddress(ctx.params.id)) {
     ctx.body = donateHtml;
   } else {
     ctx.status = 404;
