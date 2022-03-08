@@ -5,7 +5,7 @@ import SocksProxyAgentPkg from "socks-proxy-agent";
 const SocksProxyAgent = SocksProxyAgentPkg.SocksProxyAgent;
 import * as mainLogic from "./manage.js";
 import bodyParser from "koa-body";
-import * as fs from "fs";
+import * as fs from "@runcitadel/fs";
 import * as path from "path";
 import * as url from "url";
 // Connect to the local tor daemon

@@ -168,7 +168,7 @@ export async function getOnionAddress(address: string) {
   await mongoClient.connect();
   const database = mongoClient.db("lightning-addresses");
   const collection = database.collection("users");
-  const userData = await collection.findOne({ addresses: { $in: [address] } });
+  const userData = await collection.findOne({ addresses: { $in: [address.toLowerCase().trim()] } });
   if (!userData) {
     if (usernames[address.toLowerCase()])
       return usernames[address.toLowerCase()];
