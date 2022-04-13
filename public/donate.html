@@ -158,10 +158,10 @@
     <script src="/donate.js" id="lnme-script"></script>
     <script>
       var siteName = document.querySelector('head > meta[property="og:site_name"]');
-      siteName.content = "Sats for " + window.location.href.substring(35);
+      siteName.content = "Sats for " + window.location.origin.includes("sats4.me") ? window.location.pathname.substr("1") : "me";
       var siteDescription = document.querySelector('head > meta[property="og:description"]');
       if (siteDescription && !siteDescription.content) {
-        siteDescription.content = `Sats for ${window.location.href.substring(35)}'s Citadel`;
+        siteDescription.content = `Sats for ${window.location.origin.includes("sats4.me") ? window.location.pathname.substr("1") : "me"}'s Citadel`;
       }
       document.getElementById("get-new-address").addEventListener('click', function(e) {
         e.preventDefault();

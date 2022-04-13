@@ -88,7 +88,7 @@ router.post("/set-onion-url", async (ctx, next) => {
 router.get("/", async (ctx, next) => {
   ctx.body = `<html>
     <head>
-        <title>Citadel Lightning addresses</title>
+        <title>sats4me</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
@@ -126,19 +126,31 @@ router.get("/lnme.svg", async (ctx, next) => {
   await next();
 });
 
-router.get("/donate.css", async (ctx, next) => {
+router.get(".css", async (ctx, next) => {
   ctx.body = donateCss;
   ctx.type = "text/css";
   await next();
 });
 
-router.get("/donate.js", async (ctx, next) => {
+router.get(".js", async (ctx, next) => {
   ctx.body = donateJs;
   ctx.type = "application/javascript";
   await next();
 });
 
+
 router.get("/donate/:id", async (ctx, next) => {
+  if(await mainLogic.getOnionAddress(ctx.params.id)) {
+    ctx.redirect(`https://sats4.me/ctx.params.id`);
+  } else {
+    ctx.status = 404;
+    ctx.body = notFoundHtml;
+  }  
+  ctx.type = "text/html";
+  await next();
+});
+
+router.get("/:id", async (ctx, next) => {
   if(await mainLogic.getOnionAddress(ctx.params.id)) {
     ctx.body = donateHtml;
   } else {
@@ -150,7 +162,7 @@ router.get("/donate/:id", async (ctx, next) => {
 });
 
 
-router.get("/donate/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
+router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
   const userid = ctx.params.userid;
   const invoiceid = ctx.params.invoiceid;
   if (await mainLogic.getOnionAddress(userid)) {
@@ -173,7 +185,7 @@ router.get("/donate/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
   await next();
 });
 
-router.post("/donate/:userid/v1/invoices", async (ctx, next) => {
+router.post("/:userid/v1/invoices", async (ctx, next) => {
   const userid = ctx.params.userid;
   if (await mainLogic.getOnionAddress(userid)) {
     // send a request to the users onion
@@ -198,7 +210,7 @@ router.post("/donate/:userid/v1/invoices", async (ctx, next) => {
   await next();
 });
 
-router.post("/donate/:userid/v1/newaddress", async (ctx, next) => {
+router.post("/:userid/v1/newaddress", async (ctx, next) => {
   const userid = ctx.params.userid;
   if (await mainLogic.getOnionAddress(userid)) {
     // send a request to the users onion
