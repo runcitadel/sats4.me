@@ -141,7 +141,7 @@ router.get(".js", async (ctx, next) => {
 
 router.get("/donate/:id", async (ctx, next) => {
   if(await mainLogic.getOnionAddress(ctx.params.id)) {
-    ctx.redirect(`https://sats4.me/ctx.params.id`);
+    ctx.redirect(`https://sats4.me/${ctx.params.id}`);
   } else {
     ctx.status = 404;
     ctx.body = notFoundHtml;
