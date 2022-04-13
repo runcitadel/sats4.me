@@ -1,6 +1,6 @@
 import Koa from "koa";
 import Router from "@koa/router";
-import fetch from "node-fetch";
+import nodeFetch from "node-fetch";
 import SocksProxyAgentPkg from "socks-proxy-agent";
 const SocksProxyAgent = SocksProxyAgentPkg.SocksProxyAgent;
 import * as mainLogic from "./manage.js";
@@ -24,7 +24,7 @@ router.get("/.well-known/lnurlp/:username", async (ctx, next) => {
 
   if (await mainLogic.getOnionAddress(username)) {
     // send a request to the users onion
-    const apiResponse = await fetch(
+    const apiResponse = await nodeFetch(
       `http://${await mainLogic.getOnionAddress(
         username
       )}/.well-known/lnurlp/${username}${query}`,
@@ -167,7 +167,7 @@ router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
   const invoiceid = ctx.params.invoiceid;
   if (await mainLogic.getOnionAddress(userid)) {
     // send a request to the users onion
-    const apiResponse = await fetch(
+    const apiResponse = await nodeFetch(
       `http://${await mainLogic.getOnionAddress(
         userid
       )}/v1/invoice/${invoiceid}`,
@@ -189,7 +189,7 @@ router.post("/:userid/v1/invoices", async (ctx, next) => {
   const userid = ctx.params.userid;
   if (await mainLogic.getOnionAddress(userid)) {
     // send a request to the users onion
-    const apiResponse = await fetch(
+    const apiResponse = await nodeFetch(
       `http://${await mainLogic.getOnionAddress(
         userid
       )}/v1/invoices`,
@@ -214,7 +214,7 @@ router.post("/:userid/v1/newaddress", async (ctx, next) => {
   const userid = ctx.params.userid;
   if (await mainLogic.getOnionAddress(userid)) {
     // send a request to the users onion
-    const apiResponse = await fetch(
+    const apiResponse = await nodeFetch(
       `http://${await mainLogic.getOnionAddress(
         userid
       )}/v1/newaddress`,
