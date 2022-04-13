@@ -1,6 +1,6 @@
 import * as path from "path";
 import * as fs from "@runcitadel/fs";
-import { MongoClient } from "mongodb";
+import { MongoClient, ServerApiVersion } from "mongodb";
 import LNDService from "./lightning.js";
 
 const credentials = process.env.CREDENTIALS_FILE || "/root/lightning-api/mongo.pem";
@@ -27,6 +27,7 @@ const uri = process.env.DB_CONNECTION_URI ||
 const mongoClient = new MongoClient(uri, {
   sslKey: credentials,
   sslCert: credentials,
+  serverApi: ServerApiVersion.v1,
 });
 
 // Old usernames not yet in the database

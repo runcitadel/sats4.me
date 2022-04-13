@@ -21,13 +21,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@grpc/grpc-js@npm:^1.5.1":
-  version: 1.5.5
-  resolution: "@grpc/grpc-js@npm:1.5.5"
+"@grpc/grpc-js@npm:^1.6.1":
+  version: 1.6.3
+  resolution: "@grpc/grpc-js@npm:1.6.3"
   dependencies:
     "@grpc/proto-loader": ^0.6.4
     "@types/node": ">=12.12.47"
-  checksum: ccbe8267c150f98e4047bf74bf436ede71f05136697e6f299c1b9d005d133c6f132d67b392433298df884d9ebd639d08f9845b6cd2bfd9657d5704a78de281d0
+  checksum: 443240cb95ac9c9225ee599d41432a15f91bee1b49d27e61484713f0829cf9f3c85a4ee5d132afea2f31bec4102050708e4a654dcfb6b225c29a5e976e88b242
   languageName: node
   linkType: hard
 
@@ -474,12 +474,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bson@npm:^4.6.1":
-  version: 4.6.1
-  resolution: "bson@npm:4.6.1"
+"bson@npm:^4.6.2":
+  version: 4.6.2
+  resolution: "bson@npm:4.6.2"
   dependencies:
     buffer: ^5.6.0
-  checksum: 32c38400b0c5f85cf22c28b9f9bbc63b3c090c23a749a8c159db975f225161a7fe776f8a18ed1da3f58a9e7496ce2b7935753e9471f17c614bf02ebab145e052
+  checksum: f4072d059ad9a46dd92451da5efb278d98f7b23fe6de0ee8dd1f9f05e005189156509b11deeba655befdf9434cffd283bfc35bcf75d2123c1fdf9b723ce8a98d
   languageName: node
   linkType: hard
 
@@ -967,13 +967,13 @@ __metadata:
     koa: ^2.13.4
     koa-body: ^4.2.0
     koa-morgan: ^1.0.1
-    mongodb: ^4.4.1
-    nice-grpc: ^1.0.7
-    node-fetch: ^3.2.2
+    mongodb: ^4.5.0
+    nice-grpc: ^1.1.0
+    node-fetch: ^3.2.3
     socks-proxy-agent: ^6.1.1
     ts-node: ^10.7.0
-    ts-proto: ^1.108.0
-    typescript: ^4.6.2
+    ts-proto: ^1.110.4
+    typescript: ^4.6.3
   languageName: unknown
   linkType: soft
 
@@ -1052,11 +1052,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mongodb@npm:^4.4.1":
-  version: 4.4.1
-  resolution: "mongodb@npm:4.4.1"
+"mongodb@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "mongodb@npm:4.5.0"
   dependencies:
-    bson: ^4.6.1
+    bson: ^4.6.2
     denque: ^2.0.1
     mongodb-connection-string-url: ^2.5.2
     saslprep: ^1.0.3
@@ -1064,7 +1064,7 @@ __metadata:
   dependenciesMeta:
     saslprep:
       optional: true
-  checksum: 5a2924df04612cc3dfd54e6f4a9b4ab01683fe2bcb8a6aa424485939fc213aea4c7e9b59ef244aa30ccc14948906990335a6371310fe354aec8206983f3f733a
+  checksum: 423974a663c90e6673226a9ad691e8b445ecd43fc4e9e424343644b20c35188bd3d6692dcc2798022cc6b5c6f4391b54747c7543134b46f93cb3da428e5f9246
   languageName: node
   linkType: hard
 
@@ -1102,25 +1102,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nice-grpc-common@npm:^1.0.5":
-  version: 1.0.5
-  resolution: "nice-grpc-common@npm:1.0.5"
+"nice-grpc-common@npm:^1.0.6":
+  version: 1.0.6
+  resolution: "nice-grpc-common@npm:1.0.6"
   dependencies:
     node-abort-controller: ^2.0.0
     ts-error: ^1.0.6
-  checksum: 9f8c70e85321014265988c52cb415eb6076cc28b36e5ec5dc2881dcf58e6d2be8fb507115c57d5b0c21a905b28f48be556c59d999c5231b112243e986a9f4046
+  checksum: a4faee393dd14ec60e1f62108dab44d74af2901eeb6ff96a762e7e23acd5f25103453f2bf5c10fe8d7d2bc4b0c576e2d785ed05c782b9ad4533af16c50d09c62
   languageName: node
   linkType: hard
 
-"nice-grpc@npm:^1.0.7":
-  version: 1.0.7
-  resolution: "nice-grpc@npm:1.0.7"
+"nice-grpc@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "nice-grpc@npm:1.1.0"
   dependencies:
-    "@grpc/grpc-js": ^1.5.1
+    "@grpc/grpc-js": ^1.6.1
     abort-controller-x: ^0.2.4
-    nice-grpc-common: ^1.0.5
+    nice-grpc-common: ^1.0.6
     node-abort-controller: ^1.2.1
-  checksum: ae594be9d281916c1c982da974ab6ab7a8cd6c7def15a9ed7b8e0f1312230a09ab873546aa3653c417f2f4ce5be1f9308a4cae8a584d9fbf04d51d8bce9ec55d
+  checksum: 327f41f619d53b15ea52250a4799694fcae94b5465080387b55b3ccedb6d47e48f9c2407d7f283aca1f2c9e539d0dfcf1e3cdc276ff9279e23d015ea7ce6e89b
   languageName: node
   linkType: hard
 
@@ -1145,14 +1145,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"node-fetch@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "node-fetch@npm:3.2.2"
+"node-fetch@npm:^3.2.3":
+  version: 3.2.3
+  resolution: "node-fetch@npm:3.2.3"
   dependencies:
     data-uri-to-buffer: ^4.0.0
     fetch-blob: ^3.1.4
     formdata-polyfill: ^4.0.10
-  checksum: 03920e3ea8ad0122c3bad3dbd1ed005773d3623ed84eebab03c9660d49721ddbc1b2d2f28a006924c258e15a1abc26a976bbfa169fa7e52cd0c7d89f227c2307
+  checksum: 6f702b2683d6e1c097e99888bedaac4625d6895f2a8a60573a2bc04916f5577ea61d274f26e308c08cfb724b23d45de7d3514c14b59e0293e9809c66c88ac12c
   languageName: node
   linkType: hard
 
@@ -1448,13 +1448,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-poet@npm:^4.5.0":
-  version: 4.8.0
-  resolution: "ts-poet@npm:4.8.0"
+"ts-poet@npm:^4.11.0":
+  version: 4.11.0
+  resolution: "ts-poet@npm:4.11.0"
   dependencies:
     lodash: ^4.17.15
     prettier: ^2.5.1
-  checksum: c5006a0aaf432b0a7fd7c7957d823c48bc492c4f5bc3c31714e9135b70a0850eafa8d893b91ce0b730c09c77a61578c574a9c527d73800eec18d055b8dfc4a48
+  checksum: 58141523080aafdce397338c8db435a6055385ed919d77c9c77bed76f2f8f2bbe924f26e69d2681ca27270519ea0ec7e041fbadc765a4a25528fcbf2548822f5
   languageName: node
   linkType: hard
 
@@ -1468,19 +1468,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ts-proto@npm:^1.108.0":
-  version: 1.108.0
-  resolution: "ts-proto@npm:1.108.0"
+"ts-proto@npm:^1.110.4":
+  version: 1.110.4
+  resolution: "ts-proto@npm:1.110.4"
   dependencies:
     "@types/object-hash": ^1.3.0
     dataloader: ^1.4.0
     object-hash: ^1.3.1
     protobufjs: ^6.8.8
-    ts-poet: ^4.5.0
+    ts-poet: ^4.11.0
     ts-proto-descriptors: 1.6.0
   bin:
     protoc-gen-ts_proto: protoc-gen-ts_proto
-  checksum: 10824ad209b1215be23e4e31d081d12b522fefcab1a422bbfd302397876491b4b36a2d5d2e992fac061ad9d13a4e7d3b223cd2c383435eda62dc11fe2bd3452a
+  checksum: e7fda49ab5ef089bc54569399cce2b40eab18598bf28d1357d593c28796cde4c1d185fa02d7380743da0e47caaea2087fb77419c954ceb76bd4d11642a489fe2
   languageName: node
   linkType: hard
 
@@ -1501,23 +1501,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:^4.6.2":
-  version: 4.6.2
-  resolution: "typescript@npm:4.6.2"
+"typescript@npm:^4.6.3":
+  version: 4.6.3
+  resolution: "typescript@npm:4.6.3"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 8a44ed7e6f6c4cb1ebe8cf236ecda2fb119d84dcf0fbd77e707b2dfea1bbcfc4e366493a143513ce7f57203c75da9d4e20af6fe46de89749366351046be7577c
+  checksum: 255bb26c8cb846ca689dd1c3a56587af4f69055907aa2c154796ea28ee0dea871535b1c78f85a6212c77f2657843a269c3a742d09d81495b97b914bf7920415b
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@^4.6.2#~builtin<compat/typescript>":
-  version: 4.6.2
-  resolution: "typescript@patch:typescript@npm%3A4.6.2#~builtin<compat/typescript>::version=4.6.2&hash=bda367"
+"typescript@patch:typescript@^4.6.3#~builtin<compat/typescript>":
+  version: 4.6.3
+  resolution: "typescript@patch:typescript@npm%3A4.6.3#~builtin<compat/typescript>::version=4.6.3&hash=bda367"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 40b493a71747fb89fa70df104e2c4a5e284b43750af5bea024090a5261cefa387f7a9372411b13030f7bf5555cee4275443d08805642ae5c74ef76740854a4c7
+  checksum: 6bf45caf847062420592e711bc9c28bf5f9a9a7fa8245343b81493e4ededae33f1774009d1234d911422d1646a2c839f44e1a23ecb111b40a60ac2ea4c1482a8
   languageName: node
   linkType: hard
 
