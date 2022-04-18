@@ -8,7 +8,6 @@ import bodyParser from "koa-body";
 import * as fs from "@runcitadel/fs";
 import * as path from "path";
 import * as url from "url";
-// Connect to the local tor daemon
 
 const proxy = process.env.SOCKS_PROXY || "socks5h://127.0.0.1:9050";
 const app = new Koa();
@@ -39,49 +38,6 @@ router.get("/.well-known/lnurlp/:username", async (ctx, next) => {
   } else {
     ctx.status = 404;
   }
-  await next();
-});
-
-router.post("/add-address", async (ctx, next) => {
-  const address = ctx.request.body.address;
-  const signature = ctx.request.body.signature;
-  const onionUrl = ctx.request.body.onionUrl;
-
-  // Validate that all 3 are present and string
-  if (
-    !address ||
-    !signature ||
-    !onionUrl ||
-    typeof address !== "string" ||
-    typeof signature !== "string" ||
-    typeof onionUrl !== "string"
-  ) {
-    ctx.status = 400;
-    return;
-  }
-  const data = await mainLogic.addAddress(signature, onionUrl, address);
-  ctx.status = data.code;
-  ctx.body = data.msg;
-  await next();
-});
-
-router.post("/set-onion-url", async (ctx, next) => {
-  const signature = ctx.request.body.signature;
-  const onionUrl = ctx.request.body.onionUrl;
-
-  // Validate that all 3 are present and string
-  if (
-    !signature ||
-    !onionUrl ||
-    typeof signature !== "string" ||
-    typeof onionUrl !== "string"
-  ) {
-    ctx.status = 400;
-    return;
-  }
-  const data = await mainLogic.setOnionUrl(signature, onionUrl);
-  ctx.status = data.code;
-  ctx.body = data.msg;
   await next();
 });
 

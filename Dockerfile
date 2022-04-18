@@ -13,7 +13,7 @@ RUN yarn workspaces focus -A --production
 RUN find /app/node_modules | grep ".\.ts" | xargs rm
 
 # TS Build Stage
-FROM node:17-bullseye-slim as manager-builder
+FROM node:17-bullseye-slim as builder
 
 # Change directory to '/app'
 WORKDIR /app
@@ -34,7 +34,7 @@ RUN rm -rf node_modules tsconfig.tsbuildinfo *.ts **/*.ts .eslint* .git* .pretti
 FROM node:17-bullseye-slim AS manager
 
 # Copy built code from build stage to '/app' directory
-COPY --from=manager-builder /app/lib /app/lib
+COPY --from=builder /app/lib /app/lib
 
 # Copy node_modules
 COPY --from=build-dependencies-helper /app/node_modules /app/node_modules
@@ -48,5 +48,4 @@ COPY public /app/public
 # Change directory to '/app'
 WORKDIR /app
 
-EXPOSE 3006
 CMD [ "node", "lib/server.js" ]
