@@ -6,7 +6,9 @@ const supabase = Supabase.createClient(
 );
 
 export async function getOnionAddress(address: string): Promise<string | false> {
-  const { data } = await supabase.from("LightningAddresses").select("address").eq("address", address.toLowerCase());
+  const { data, error } = await supabase.from("LightningAddresses").select("address").eq("address", address.toLowerCase());
+  console.log(data);
+  console.error(error);
   if(!data || data.length !== 1) {
     return false;
   }
