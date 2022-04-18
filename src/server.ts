@@ -82,18 +82,15 @@ router.get("/lnme.svg", async (ctx, next) => {
   await next();
 });
 
-router.get(".css", async (ctx, next) => {
+router.get("/donate.css", async (ctx, next) => {
   ctx.body = donateCss;
   ctx.type = "text/css";
-  await next();
 });
 
-router.get(".js", async (ctx, next) => {
+router.get("/donate.js", async (ctx, next) => {
   ctx.body = donateJs;
   ctx.type = "application/javascript";
-  await next();
 });
-
 
 router.get("/donate/:id", async (ctx, next) => {
   if(await mainLogic.getOnionAddress(ctx.params.id)) {
