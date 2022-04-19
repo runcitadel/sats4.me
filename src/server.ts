@@ -42,29 +42,7 @@ router.get("/.well-known/lnurlp/:username", async (ctx, next) => {
 });
 
 router.get("/", async (ctx, next) => {
-  ctx.body = `<html>
-    <head>
-        <title>sats4me</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            body {
-                width: 100%;
-                height: 100%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background: radial-gradient(#ffffab00, #ffc14f);
-                padding: 0;
-                margin: 0;
-                font-size: 60vh;
-            }
-        </style>
-    </head>
-    <body>
-        ⚡
-    </body>
-</html>`;
+  ctx.redirect("https://account.runcitadel.space");
   await next();
 });
 
@@ -92,20 +70,12 @@ router.get("/donate.js", async (ctx, next) => {
   ctx.type = "application/javascript";
 });
 
-router.get("/donate/:id", async (ctx, next) => {
-  if(await mainLogic.getOnionAddress(ctx.params.id)) {
-    ctx.redirect(`https://sats4.me/${ctx.params.id}`);
-  } else {
-    ctx.status = 404;
-    ctx.body = notFoundHtml;
-  }  
-  ctx.type = "text/html";
-  await next();
-});
-
 router.get("/:id", async (ctx, next) => {
   if(await mainLogic.getOnionAddress(ctx.params.id)) {
-    ctx.body = donateHtml;
+    ctx.body = donateHtml
+                .replace('<meta property="og:site_name" content="">', `<meta property="og:site_name" content="Sats for @${ctx.params.id}">`)
+                .replace('<meta name="lightning" content="lnurlp:address@sats4.me">', `<meta name="lightning" content="lnurlp:${ctx.params.id}@sats4.me">`)
+                .replace('<meta property="og:description" content="">', `<meta property="og:site_name" content="Send some sats to @${ctx.params.id}">`);
   } else {
     ctx.status = 404;
     ctx.body = notFoundHtml;
@@ -113,7 +83,6 @@ router.get("/:id", async (ctx, next) => {
   ctx.type = "text/html";
   await next();
 });
-
 
 router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
   const userid = ctx.params.userid;

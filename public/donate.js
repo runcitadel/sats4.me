@@ -134,7 +134,7 @@ class LnMe {
     this.target.querySelectorAll('.lnme-copy').forEach(element => {
       element.addEventListener('click', (e) => {
         navigator.clipboard.writeText(this.invoice.payment_request).then(() => {
-          alert('Copied to clipboad');
+          alert('Copied to clipboard');
         });
       });
     });
