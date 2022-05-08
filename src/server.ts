@@ -31,6 +31,8 @@ router.get("/.well-known/lnurlp/:username", async (ctx, next) => {
         agent,
         headers: {
           "X-Forwarded-For": ctx.host,
+          "X-Forwarded-Proto": ctx.protocol,
+          "X-Forwarded-Host": ctx.host,
         },
       }
     );
@@ -97,6 +99,8 @@ router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
         agent,
         headers: {
           "X-Forwarded-For": ctx.host,
+          "X-Forwarded-Proto": ctx.protocol,
+          "X-Forwarded-Host": ctx.host,
         },
       }
     );
@@ -120,6 +124,8 @@ router.post("/:userid/v1/invoices", async (ctx, next) => {
         method: "POST",
         headers: {
           "X-Forwarded-For": ctx.host,
+          "X-Forwarded-Proto": ctx.protocol,
+          "X-Forwarded-Host": ctx.host,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(ctx.request.body),
@@ -145,6 +151,8 @@ router.post("/:userid/v1/newaddress", async (ctx, next) => {
         method: "POST",
         headers: {
           "X-Forwarded-For": ctx.host,
+          "X-Forwarded-Proto": ctx.protocol,
+          "X-Forwarded-Host": ctx.host,
           "Content-Type": "application/json",
         },
         body: JSON.stringify(ctx.request.body),
