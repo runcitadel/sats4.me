@@ -75,22 +75,26 @@ const notFoundHtml = fs.readFileSync(
 router.get("/lnme.svg", async (ctx, next) => {
   ctx.body = lnmeSvg;
   ctx.type = "image/svg+xml";
+  ctx.set("Cache-Control", "public, max-age=604800");
   await next();
 });
 
 router.get("/donate.css", async (ctx, next) => {
   ctx.body = donateCss;
   ctx.type = "text/css";
+  ctx.set("Cache-Control", "public, max-age=604800");
   await next();
 });
 
 router.get("/donate.js", async (ctx, next) => {
   ctx.body = donateJs;
   ctx.type = "application/javascript";
+  ctx.set("Cache-Control", "public, max-age=604800");
   await next();
 });
 
 router.get("/:id", async (ctx, next) => {
+  ctx.set("Cache-Control", "public, max-age=3600");
   if (await mainLogic.getOnionAddress(ctx.hostname, ctx.params.id)) {
     ctx.body = donateHtml
       .replace(
@@ -114,6 +118,7 @@ router.get("/:id", async (ctx, next) => {
 });
 
 router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
+  ctx.set("Cache-Control", "no-cache, no-store, must-revalidate");
   const userid = ctx.params.userid;
   const invoiceid = ctx.params.invoiceid;
   if (await mainLogic.getOnionAddress(ctx.hostname, userid)) {
@@ -140,6 +145,7 @@ router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
 });
 
 router.post("/:userid/v1/invoices", async (ctx, next) => {
+  ctx.set("Cache-Control", "no-cache, no-store, must-revalidate");
   const userid = ctx.params.userid;
   if (await mainLogic.getOnionAddress(ctx.hostname, userid)) {
     // send a request to the users onion
@@ -168,6 +174,7 @@ router.post("/:userid/v1/invoices", async (ctx, next) => {
 });
 
 router.post("/:userid/v1/newaddress", async (ctx, next) => {
+  ctx.set("Cache-Control", "no-cache, no-store, must-revalidate");
   const userid = ctx.params.userid;
   if (await mainLogic.getOnionAddress(ctx.hostname, userid)) {
     // send a request to the users onion
