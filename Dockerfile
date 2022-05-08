@@ -1,4 +1,4 @@
-FROM node:17-bullseye-slim as build-dependencies-helper
+FROM node:18-bullseye-slim as build-dependencies-helper
 
 # Create app directory
 WORKDIR /app
@@ -13,7 +13,7 @@ RUN yarn workspaces focus -A --production
 RUN find /app/node_modules | grep ".\.ts" | xargs rm
 
 # TS Build Stage
-FROM node:17-bullseye-slim as builder
+FROM node:18-bullseye-slim as builder
 
 # Change directory to '/app'
 WORKDIR /app
@@ -31,7 +31,7 @@ RUN yarn build
 RUN rm -rf node_modules tsconfig.tsbuildinfo *.ts **/*.ts .eslint* .git* .prettier* .vscode* tsconfig.json .yarn* yarn.lock
 
 # Final image
-FROM node:17-bullseye-slim AS manager
+FROM node:18-bullseye-slim AS manager
 
 # Copy built code from build stage to '/app' directory
 COPY --from=builder /app/lib /app/lib
