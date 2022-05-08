@@ -21,10 +21,11 @@ router.get("/.well-known/lnurlp/:username", async (ctx, next) => {
   // Other request query params (all as string)
   const query = ctx.querystring ? `?${ctx.querystring}` : "";
 
-  if (await mainLogic.getOnionAddress(username)) {
+  if (await mainLogic.getOnionAddress(ctx.hostname, username)) {
     // send a request to the users onion
     const apiResponse = await nodeFetch(
       `http://${await mainLogic.getOnionAddress(
+        ctx.hostname,
         username
       )}/.well-known/lnurlp/${username}${query}`,
       {
@@ -50,11 +51,26 @@ router.get("/", async (ctx, next) => {
 
 // get path from import.meta.url
 const __dirname = path.dirname(url.fileURLToPath(import.meta.url));
-const donateCss = fs.readFileSync(path.join(__dirname, "..", "public", "donate.css"), "utf8");
-const donateHtml = fs.readFileSync(path.join(__dirname, "..", "public", "donate.html"), "utf8");
-const donateJs = fs.readFileSync(path.join(__dirname, "..", "public", "donate.js"), "utf8");
-const lnmeSvg = fs.readFileSync(path.join(__dirname, "..", "public", "lnme.svg"), "utf8");
-const notFoundHtml = fs.readFileSync(path.join(__dirname, "..", "public", "notfound.html"), "utf8");
+const donateCss = fs.readFileSync(
+  path.join(__dirname, "..", "public", "donate.css"),
+  "utf8"
+);
+const donateHtml = fs.readFileSync(
+  path.join(__dirname, "..", "public", "donate.html"),
+  "utf8"
+);
+const donateJs = fs.readFileSync(
+  path.join(__dirname, "..", "public", "donate.js"),
+  "utf8"
+);
+const lnmeSvg = fs.readFileSync(
+  path.join(__dirname, "..", "public", "lnme.svg"),
+  "utf8"
+);
+const notFoundHtml = fs.readFileSync(
+  path.join(__dirname, "..", "public", "notfound.html"),
+  "utf8"
+);
 
 router.get("/lnme.svg", async (ctx, next) => {
   ctx.body = lnmeSvg;
@@ -65,23 +81,34 @@ router.get("/lnme.svg", async (ctx, next) => {
 router.get("/donate.css", async (ctx, next) => {
   ctx.body = donateCss;
   ctx.type = "text/css";
+  await next();
 });
 
 router.get("/donate.js", async (ctx, next) => {
   ctx.body = donateJs;
   ctx.type = "application/javascript";
+  await next();
 });
 
 router.get("/:id", async (ctx, next) => {
-  if(await mainLogic.getOnionAddress(ctx.params.id)) {
+  if (await mainLogic.getOnionAddress(ctx.hostname, ctx.params.id)) {
     ctx.body = donateHtml
-                .replace('<meta property="og:site_name" content="">', `<meta property="og:site_name" content="Sats for @${ctx.params.id}">`)
-                .replace('<meta name="lightning" content="lnurlp:address@sats4.me">', `<meta name="lightning" content="lnurlp:${ctx.params.id}@sats4.me">`)
-                .replace('<meta property="og:description" content="">', `<meta property="og:site_name" content="Send some sats to @${ctx.params.id}">`);
+      .replace(
+        '<meta property="og:site_name" content="">',
+        `<meta property="og:site_name" content="Sats for @${ctx.params.id}">`
+      )
+      .replace(
+        '<meta name="lightning" content="lnurlp:address@sats4.me">',
+        `<meta name="lightning" content="lnurlp:${ctx.params.id}@${ctx.hostname}">`
+      )
+      .replace(
+        '<meta property="og:description" content="">',
+        `<meta property="og:site_name" content="Send some sats to @${ctx.params.id}">`
+      );
   } else {
     ctx.status = 404;
     ctx.body = notFoundHtml;
-  }  
+  }
   ctx.type = "text/html";
   await next();
 });
@@ -89,10 +116,11 @@ router.get("/:id", async (ctx, next) => {
 router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
   const userid = ctx.params.userid;
   const invoiceid = ctx.params.invoiceid;
-  if (await mainLogic.getOnionAddress(userid)) {
+  if (await mainLogic.getOnionAddress(ctx.hostname, userid)) {
     // send a request to the users onion
     const apiResponse = await nodeFetch(
       `http://${await mainLogic.getOnionAddress(
+        ctx.hostname,
         userid
       )}/v1/invoice/${invoiceid}`,
       {
@@ -113,10 +141,11 @@ router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
 
 router.post("/:userid/v1/invoices", async (ctx, next) => {
   const userid = ctx.params.userid;
-  if (await mainLogic.getOnionAddress(userid)) {
+  if (await mainLogic.getOnionAddress(ctx.hostname, userid)) {
     // send a request to the users onion
     const apiResponse = await nodeFetch(
       `http://${await mainLogic.getOnionAddress(
+        ctx.hostname,
         userid
       )}/v1/invoices`,
       {
@@ -140,10 +169,11 @@ router.post("/:userid/v1/invoices", async (ctx, next) => {
 
 router.post("/:userid/v1/newaddress", async (ctx, next) => {
   const userid = ctx.params.userid;
-  if (await mainLogic.getOnionAddress(userid)) {
+  if (await mainLogic.getOnionAddress(ctx.hostname, userid)) {
     // send a request to the users onion
     const apiResponse = await nodeFetch(
       `http://${await mainLogic.getOnionAddress(
+        ctx.hostname,
         userid
       )}/v1/newaddress`,
       {
