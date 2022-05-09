@@ -5,14 +5,21 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@core-ln/core": "^0.2.0",
     "@koa/router": "^10.1.1",
     "@runcitadel/fs": "^1.0.2",
     "@supabase/supabase-js": "^1.34.1",
+    "axios": "^0.27.2",
+    "bolt11": "^1.4.0",
+    "bolt12": "^0.0.9",
     "koa": "^2.13.4",
     "koa-body": "^4.2.0",
     "koa-morgan": "^1.0.1",
+    "lnurl-pay": "^0.2.3",
     "node-fetch": "^3.2.3",
-    "socks-proxy-agent": "^6.1.1"
+    "socks-proxy-agent": "^6.1.1",
+    "uuid": "^8.3.2",
+    "ws": "^8.6.0"
   },
   "devDependencies": {
     "@types/koa": "^2.13.4",

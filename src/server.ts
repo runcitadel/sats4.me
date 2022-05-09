@@ -1,6 +1,5 @@
 import Koa from "koa";
 import Router from "@koa/router";
-import nodeFetch from "node-fetch";
 import SocksProxyAgentPkg from "socks-proxy-agent";
 const SocksProxyAgent = SocksProxyAgentPkg.SocksProxyAgent;
 import * as mainLogic from "./manage.js";
@@ -8,6 +7,7 @@ import bodyParser from "koa-body";
 import * as fs from "@runcitadel/fs";
 import * as path from "path";
 import * as url from "url";
+import Providers from "./providers/index.js";
 
 const proxy = process.env.SOCKS_PROXY || "socks5h://127.0.0.1:9050";
 const app = new Koa();
@@ -15,33 +15,53 @@ const router = new Router();
 router.use(bodyParser());
 
 const agent = new SocksProxyAgent(proxy);
+const providers = new Providers(process.env.CLN_SOCKET as string, agent);
 
 router.get("/.well-known/lnurlp/:username", async (ctx, next) => {
   const username: string = ctx.params.username;
-  // Other request query params (all as string)
-  const query = ctx.querystring ? `?${ctx.querystring}` : "";
-
-  if (await mainLogic.getOnionAddress(ctx.hostname, username)) {
-    // send a request to the users onion
-    const apiResponse = await nodeFetch(
-      `http://${await mainLogic.getOnionAddress(
-        ctx.hostname,
-        username
-      )}/.well-known/lnurlp/${username}${query}`,
-      {
-        agent,
-        headers: {
-          "X-Forwarded-For": ctx.host,
-          "X-Forwarded-Proto": ctx.protocol,
-          "X-Forwarded-Host": ctx.host,
-        },
-      }
-    );
-    ctx.body = await apiResponse.text();
+  const proxyTarget = await mainLogic.getProxyTarget(ctx.hostname, username);
+  if (proxyTarget) {
+    ctx.body = {
+      status: "OK",
+      callback: `${ctx.protocol}://${ctx.host}/callback/${username}`,
+      tag: "payRequest",
+      // TODO: Dynamically get these limits
+      maxSendable: 100000000,
+      minSendable: 1000,
+      metadata: JSON.stringify([
+        ["text/identifier", `${username}@${ctx.host}`],
+        ["text/plain", `Sats for ${username}@${ctx.host}`],
+      ]),
+      commentAllowed: 256,
+    };
   } else {
     ctx.status = 404;
   }
-  await next();
+});
+
+router.get("/callback/:username", async (ctx, next) => {
+  const username: string = ctx.params.username;
+  const amount = Number(ctx.query.amount) || 0;
+  const comment = (ctx.query.comment as string) || "Paid through sats4.me";
+  const proxyTarget = await mainLogic.getProxyTarget(ctx.hostname, username);
+  if (proxyTarget) {
+    const provider = await providers.getProvider(proxyTarget.provider);
+    ctx.body = {
+      status: "OK",
+      successAction: { tag: "message", message: "Thanks, payment received!" },
+      routes: [],
+      pr: await provider.getInvoice({
+        username,
+        target: proxyTarget.target,
+        amountMsat: amount,
+        host: ctx.host,
+        proto: ctx.protocol,
+        comment,
+      }),
+    };
+  } else {
+    ctx.status = 404;
+  }
 });
 
 router.get("/", async (ctx, next) => {
@@ -76,26 +96,23 @@ router.get("/lnme.svg", async (ctx, next) => {
   ctx.body = lnmeSvg;
   ctx.type = "image/svg+xml";
   ctx.set("Cache-Control", "public, max-age=604800");
-  await next();
 });
 
 router.get("/donate.css", async (ctx, next) => {
   ctx.body = donateCss;
   ctx.type = "text/css";
   ctx.set("Cache-Control", "public, max-age=604800");
-  await next();
 });
 
 router.get("/donate.js", async (ctx, next) => {
   ctx.body = donateJs;
   ctx.type = "application/javascript";
   ctx.set("Cache-Control", "public, max-age=604800");
-  await next();
 });
 
 router.get("/:id", async (ctx, next) => {
   ctx.set("Cache-Control", "public, max-age=3600");
-  if (await mainLogic.getOnionAddress(ctx.hostname, ctx.params.id)) {
+  if (await mainLogic.getProxyTarget(ctx.hostname, ctx.params.id)) {
     ctx.body = donateHtml
       .replace(
         '<meta property="og:site_name" content="">',
@@ -114,30 +131,20 @@ router.get("/:id", async (ctx, next) => {
     ctx.body = notFoundHtml;
   }
   ctx.type = "text/html";
-  await next();
 });
 
 router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
   ctx.set("Cache-Control", "no-cache, no-store, must-revalidate");
-  const userid = ctx.params.userid;
-  const invoiceid = ctx.params.invoiceid;
-  if (await mainLogic.getOnionAddress(ctx.hostname, userid)) {
-    // send a request to the users onion
-    const apiResponse = await nodeFetch(
-      `http://${await mainLogic.getOnionAddress(
-        ctx.hostname,
-        userid
-      )}/v1/invoice/${invoiceid}`,
-      {
-        agent,
-        headers: {
-          "X-Forwarded-For": ctx.host,
-          "X-Forwarded-Proto": ctx.protocol,
-          "X-Forwarded-Host": ctx.host,
-        },
-      }
-    );
-    ctx.body = await apiResponse.text();
+  const username = ctx.params.userid;
+  const paymentHash = ctx.params.invoiceid;
+  const target = await mainLogic.getProxyTarget(ctx.hostname, username);
+  if (target) {
+    const provider = providers.getProvider(target.provider);
+    if(provider.hasPolling) {
+      ctx.body = await provider.isPaid(target.target, paymentHash);
+    } else {
+      ctx.status = 400;
+    }
   } else {
     ctx.status = 404;
   }
@@ -146,27 +153,23 @@ router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
 
 router.post("/:userid/v1/invoices", async (ctx, next) => {
   ctx.set("Cache-Control", "no-cache, no-store, must-revalidate");
-  const userid = ctx.params.userid;
-  if (await mainLogic.getOnionAddress(ctx.hostname, userid)) {
-    // send a request to the users onion
-    const apiResponse = await nodeFetch(
-      `http://${await mainLogic.getOnionAddress(
-        ctx.hostname,
-        userid
-      )}/v1/invoices`,
-      {
-        agent,
-        method: "POST",
-        headers: {
-          "X-Forwarded-For": ctx.host,
-          "X-Forwarded-Proto": ctx.protocol,
-          "X-Forwarded-Host": ctx.host,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(ctx.request.body),
-      }
-    );
-    ctx.body = await apiResponse.text();
+  const username = ctx.params.userid;
+  const target = await mainLogic.getProxyTarget(ctx.hostname, username);
+  if (target) {
+    const provider = await providers.getProvider(target.provider);
+    const invoice = await provider.getInvoice({
+      username,
+      target: target.target,
+      amountMsat: Number(ctx.body.value),
+      host: ctx.host,
+      proto: ctx.protocol,
+      comment: ctx.body.memo,
+    });
+    ctx.body = {
+      payment_hash: invoice.paymentHash,
+      payment_request: invoice.bolt11,
+      settled: false,
+    };
   } else {
     ctx.status = 404;
   }
@@ -175,27 +178,20 @@ router.post("/:userid/v1/invoices", async (ctx, next) => {
 
 router.post("/:userid/v1/newaddress", async (ctx, next) => {
   ctx.set("Cache-Control", "no-cache, no-store, must-revalidate");
-  const userid = ctx.params.userid;
-  if (await mainLogic.getOnionAddress(ctx.hostname, userid)) {
-    // send a request to the users onion
-    const apiResponse = await nodeFetch(
-      `http://${await mainLogic.getOnionAddress(
-        ctx.hostname,
-        userid
-      )}/v1/newaddress`,
-      {
-        agent,
-        method: "POST",
-        headers: {
-          "X-Forwarded-For": ctx.host,
-          "X-Forwarded-Proto": ctx.protocol,
-          "X-Forwarded-Host": ctx.host,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(ctx.request.body),
-      }
-    );
-    ctx.body = await apiResponse.text();
+  const username = ctx.params.userid;
+  const target = await mainLogic.getProxyTarget(ctx.hostname, username);
+  if (target) {
+    const provider = providers.getProvider(target.provider);
+    if(provider.supportsOnchain) {
+      ctx.body = await provider.getAddr({
+        username,
+        targetUrl: target.target,
+        host: ctx.host,
+        proto: ctx.protocol,
+      });
+    } else {
+      ctx.status = 400;
+    }
   } else {
     ctx.status = 404;
   }
