@@ -160,10 +160,10 @@ router.post("/:userid/v1/invoices", async (ctx, next) => {
     const invoice = await provider.getInvoice({
       username,
       target: target.target,
-      amountMsat: Number(ctx.body.value),
+      amountMsat: Number(ctx.request.body.value),
       host: ctx.host,
       proto: ctx.protocol,
-      comment: ctx.body.memo,
+      comment: ctx.request.body.memo,
     });
     ctx.body = {
       payment_hash: invoice.paymentHash,
