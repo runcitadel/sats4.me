@@ -1,13 +1,12 @@
 import Supabase from "@supabase/supabase-js";
 
-export enum Provider {
-  LNME = "lnme",
-  ALBY = "alby",
-  LNADDR = "otheraddr",
-  LNBITS = "lnbits",
-  BOLT12 = "bolt12",
-  LNURL = "lnurl",
-}
+export type Provider =
+  | "lnme"
+  | "alby"
+  | "otheraddr"
+  | "lnbits"
+  | "bolt12"
+  | "lnurl";
 
 const supabase = Supabase.createClient(
   process.env.SUPABASE_URL as string,
@@ -44,7 +43,7 @@ export async function getOnionAddressMain(address: string): Promise<
   }
   return {
     target: data[0].proxyTarget,
-    provider: Provider[data[0].provider as keyof typeof Provider],
+    provider:data[0].provider,
   };
 }
 
@@ -74,11 +73,11 @@ export async function getOnionAddressForDomain(
   if (error2 || !data2 || data2.length === 0 || data.length === 1)
     return {
       target: data[0].proxyTarget,
-      provider: Provider[data[0].provider as keyof typeof Provider],
+      provider: data[0].provider,
     };
 
   return {
     target: data2[0].proxyTarget,
-    provider: Provider[data2[0].provider as keyof typeof Provider],
+    provider: data2[0].provider,
   };
 }

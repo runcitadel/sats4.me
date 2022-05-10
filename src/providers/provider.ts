@@ -26,8 +26,8 @@ export interface IProvider {
 
 export class ProviderManager {
   providers: Record<string, IProvider> = {};
-  getProvider(provider: Provider | string): IProvider {
-    const foundProvider = this.providers[Provider[provider as keyof typeof Provider]];
+  getProvider(provider: Provider): IProvider {
+    const foundProvider = this.providers[provider];
     if(!foundProvider) throw new Error("Provider not found!");
     return foundProvider;
   }
