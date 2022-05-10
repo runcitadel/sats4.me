@@ -21,7 +21,8 @@ export class LnMeProvider implements IProvider {
     host: string;
     proto: string;
   }) {
-    console.log(targetUrl);
+    if(!targetUrl.startsWith("http"))
+      targetUrl = `http://${targetUrl}`;
     const data = await axios.post(
       `${targetUrl}/v1/invoices`,
       {
@@ -53,6 +54,8 @@ export class LnMeProvider implements IProvider {
     host: string;
     proto: string;
   }): Promise<string> {
+    if(!targetUrl.startsWith("http"))
+      targetUrl = `http://${targetUrl}`;
     const data = await axios.post(
       `${targetUrl}/v1/newaddress`,
       {},
@@ -70,6 +73,8 @@ export class LnMeProvider implements IProvider {
   }
 
   async isPaid(targetUrl: string, paymentHash: string) {
+    if(!targetUrl.startsWith("http"))
+      targetUrl = `http://${targetUrl}`;
     const data = await axios.get(
       `${targetUrl}/v1/invoice/${paymentHash}`,
       {
