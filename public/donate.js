@@ -151,7 +151,8 @@ class LnMe {
       method: 'POST',
       mode: 'cors',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ memo: this.memo, value: this.value })
+      // value is expected in msat later
+      body: JSON.stringify({ memo: this.memo, value: this.value * 1000 })
     };
     return this._fetch(
       this.createInvoiceUrl(),
