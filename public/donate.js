@@ -164,7 +164,6 @@ class LnMe {
 
   newAddress() {
     let args = {
-      method: 'POST',
       mode: 'cors',
       header: { 'Content-Type': 'application/json' }
     };

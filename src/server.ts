@@ -176,7 +176,7 @@ router.post("/:userid/v1/invoices", async (ctx, next) => {
   await next();
 });
 
-router.post("/:userid/v1/newaddress", async (ctx, next) => {
+router.get("/:userid/v1/newaddress", async (ctx, next) => {
   ctx.set("Cache-Control", "no-cache, no-store, must-revalidate");
   const username = ctx.params.userid;
   const target = await mainLogic.getProxyTarget(ctx.hostname, username);
