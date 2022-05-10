@@ -21,6 +21,7 @@ export class LnMeProvider implements IProvider {
     host: string;
     proto: string;
   }) {
+    console.log(targetUrl);
     const data = await axios.post(
       `${targetUrl}/v1/invoices`,
       {
