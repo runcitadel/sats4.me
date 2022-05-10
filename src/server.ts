@@ -140,7 +140,7 @@ router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
   const target = await mainLogic.getProxyTarget(ctx.hostname, username);
   if (target) {
     const provider = providers.getProvider(target.provider);
-    if(provider.hasPolling) {
+    if (provider.hasPolling) {
       ctx.body = await provider.isPaid(target.target, paymentHash);
     } else {
       ctx.status = 400;
@@ -182,13 +182,15 @@ router.get("/:userid/v1/newaddress", async (ctx, next) => {
   const target = await mainLogic.getProxyTarget(ctx.hostname, username);
   if (target) {
     const provider = providers.getProvider(target.provider);
-    if(provider.supportsOnchain) {
-      ctx.body = await provider.getAddr({
-        username,
-        targetUrl: target.target,
-        host: ctx.host,
-        proto: ctx.protocol,
-      });
+    if (provider.supportsOnchain) {
+      ctx.body = JSON.stringify(
+        await provider.getAddr({
+          username,
+          targetUrl: target.target,
+          host: ctx.host,
+          proto: ctx.protocol,
+        })
+      );
     } else {
       ctx.status = 400;
     }
