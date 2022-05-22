@@ -154,12 +154,14 @@ router.get("/:userid/v1/invoice/:invoiceid", async (ctx, next) => {
 router.options("/:userid/v1/invoices", async (ctx, next) => {
   ctx.set("Access-Control-Allow-Origin", "*");
   ctx.set("Access-Control-Allow-Methods", "POST");
+  ctx.set("Access-Control-Allow-Headers", "*");
   ctx.status = 200;
 });
 
 router.post("/:userid/v1/invoices", async (ctx, next) => {
   ctx.set("Cache-Control", "no-cache, no-store, must-revalidate");
   ctx.set("Access-Control-Allow-Origin", "*");
+  ctx.set("Access-Control-Allow-Headers", "*");
   const username = ctx.params.userid;
   const target = await mainLogic.getProxyTarget(ctx.hostname, username);
   if (target) {
