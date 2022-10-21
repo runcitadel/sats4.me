@@ -27,7 +27,8 @@ export async function getProxyTarget(
     .select("proxyTarget, provider")
     .eq("address", address.toLowerCase())
     .single();
-  if (error || !data) {
+  if (error) {
+    console.error(error);
     return false;
   }
   return {
