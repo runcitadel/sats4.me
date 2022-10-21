@@ -1,19 +1,17 @@
-import { IProvider } from "./provider";
-import axios from "axios";
-import { Agent } from "http";
+import { IProvider } from "./provider.ts";
 
 export class LnMeProvider implements IProvider {
   supportsOnchain = true;
   hasPolling = true;
 
-  constructor(public agent: Agent) {}
+  constructor() { }
 
   async getInvoice({
     target: targetUrl,
     amountMsat,
     comment,
     host,
-    proto
+    proto,
   }: {
     target: string;
     amountMsat: number;
@@ -21,16 +19,16 @@ export class LnMeProvider implements IProvider {
     host: string;
     proto: string;
   }) {
-    if(!targetUrl.startsWith("http"))
+    if (!targetUrl.startsWith("http"))
       targetUrl = `http://${targetUrl}`;
-    const data = await axios.post(
+    const res = await fetch(
       `${targetUrl}/v1/invoices`,
       {
-        memo: comment,
-        value: Math.round(amountMsat / 1000)
-      },
-      {
-        httpAgent: this.agent,
+        body: JSON.stringify({
+          memo: comment,
+          value: Math.round(amountMsat / 1000)
+        }),
+        method: "POST",
         headers: {
           "X-Forwarded-For": host,
           "X-Forwarded-Proto": proto,
@@ -39,52 +37,52 @@ export class LnMeProvider implements IProvider {
         },
       }
     );
+    const data = await res.json();
     return {
-      paymentHash: data.data.payment_hash,
-      bolt11: data.data.payment_request,
+      paymentHash: data.payment_hash,
+      bolt11: data.payment_request,
     };
   }
 
   async getAddr({
-    targetUrl,
+    target: targetUrl,
     host,
     proto,
   }: {
-    targetUrl: string;
+    target: string;
     host: string;
     proto: string;
   }): Promise<string> {
-    if(!targetUrl.startsWith("http"))
+    if (!targetUrl.startsWith("http"))
       targetUrl = `http://${targetUrl}`;
-    const data = await axios.post(
-      `${targetUrl}/v1/newaddress`,
-      {},
-      {
-        httpAgent: this.agent,
-        headers: {
-          "X-Forwarded-For": host,
-          "X-Forwarded-Proto": proto,
-          "X-Forwarded-Host": host,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    return data.data;
+      const res = await fetch(
+        `${targetUrl}/v1/newaddress`,
+        {
+          method: "POST",
+          headers: {
+            "X-Forwarded-For": host,
+            "X-Forwarded-Proto": proto,
+            "X-Forwarded-Host": host,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      return await res.text();
   }
 
   async isPaid(targetUrl: string, paymentHash: string) {
-    if(!targetUrl.startsWith("http"))
+    if (!targetUrl.startsWith("http"))
       targetUrl = `http://${targetUrl}`;
-    const data = await axios.get(
+    const res = await fetch(
       `${targetUrl}/v1/invoice/${paymentHash}`,
       {
-        httpAgent: this.agent,
         headers: {
           "Content-Type": "application/json",
         },
       }
     );
-    return data.data.settled as boolean;
+    const data = await res.json();
+    return data.settled as boolean;
 
   }
 }

@@ -1,3 +1,11 @@
-# Lightning address reverse proxy
+# fresh project
 
-This is the source code of our reverse proxy for Lightning Adresses running at [sats4.me](https://sats4.me).
+### Usage
+
+Start the project:
+
+```
+deno task start
+```
+
+This will watch the project directory and restart as necessary.

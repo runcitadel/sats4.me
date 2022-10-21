@@ -1,4 +1,4 @@
-import { Provider } from "../manage.js";
+import { Provider } from "../manage.ts";
 
 export interface IProvider {
   supportsOnchain: boolean;
@@ -17,7 +17,7 @@ export interface IProvider {
   }>;
   getAddr(data: {
     username: string;
-    targetUrl: string;
+    target: string;
     host: string;
     proto: string;
   }): string | Promise<string>;
