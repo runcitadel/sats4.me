@@ -50,14 +50,14 @@ router.get("/callback/:username", async (ctx, next) => {
       status: "OK",
       successAction: { tag: "message", message: "Thanks, payment received!" },
       routes: [],
-      pr: await provider.getInvoice({
+      pr: (await provider.getInvoice({
         username,
         target: proxyTarget.target,
         amountMsat: amount,
         host: ctx.host,
         proto: ctx.protocol,
         comment,
-      }),
+      })),
     };
   } else {
     ctx.status = 404;
