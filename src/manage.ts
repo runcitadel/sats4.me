@@ -1,4 +1,7 @@
+import { installGlobals } from "https://deno.land/x/virtualstorage@0.1.0/mod.ts";
 import { createClient } from "https://cdn.skypack.dev/@supabase/supabase-js?dts";
+
+installGlobals();
 
 export type Provider =
   | "lnme"
