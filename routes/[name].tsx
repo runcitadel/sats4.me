@@ -14,7 +14,7 @@ export const handler: Handlers<SendSatsProps> = {
     const proxyTarget = await mainLogic.getProxyTarget(name);
 
     return ctx.render({
-      exists: !!proxyTarget,
+      exists: proxyTarget !== false,
     });
   },
 };
