@@ -31,7 +31,7 @@ export default function SendLn(props: SendLnProps) {
       {invoice
         ? (
           <>
-            Thank you! <a href={`lightning:${invoice}`}>{invoice}</a>
+            Thank you! <a class="text-base block" href={`lightning:${invoice}`}>{invoice}</a>
           </>
         )
         : (
