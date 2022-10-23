@@ -20,7 +20,7 @@ export class LnMeProvider implements IProvider {
     proto: string;
   }) {
     if (!targetUrl.startsWith("http"))
-      targetUrl = `http://${targetUrl}`;
+      targetUrl = `https://${targetUrl}`;
     const res = await fetch(
       `${targetUrl}/v1/invoices`,
       {
@@ -52,7 +52,7 @@ export class LnMeProvider implements IProvider {
     proto: string;
   }): Promise<string> {
     if (!targetUrl.startsWith("http"))
-      targetUrl = `http://${targetUrl}`;
+      targetUrl = `https://${targetUrl}`;
       const res = await fetch(
         `${targetUrl}/v1/newaddress`,
         {
@@ -62,23 +62,6 @@ export class LnMeProvider implements IProvider {
           },
         }
       );
-      console.log(`${targetUrl}/v1/newaddress`);
       return await res.json();
-  }
-
-  async isPaid(targetUrl: string, paymentHash: string) {
-    if (!targetUrl.startsWith("http"))
-      targetUrl = `http://${targetUrl}`;
-    const res = await fetch(
-      `${targetUrl}/v1/invoice/${paymentHash}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await res.json();
-    return data.settled as boolean;
-
   }
 }

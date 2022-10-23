@@ -21,7 +21,6 @@ export interface IProvider {
     host: string;
     proto: string;
   }): string | Promise<string>;
-  isPaid(targetUrl: string, paymentHash: string): boolean | Promise<boolean>;
 }
 
 export class ProviderManager {

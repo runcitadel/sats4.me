@@ -1,5 +1,5 @@
-import { IProvider } from "./provider.js";
-import lnbits from "lnbits";
+import { IProvider } from "./provider.ts";
+import lnbits from "npm:lnbits";
 
 export class LnbitsProvider implements IProvider {
   hasPolling = true;
@@ -33,20 +33,6 @@ export class LnbitsProvider implements IProvider {
       bolt11: invoice.payment_request,
       paymentHash: invoice.payment_hash,
     };
-  }
-
-  async isPaid(target: string, paymentHash: string): Promise<boolean> {
-    let [invoiceKey, server] = target.split("@");
-    if (!server.startsWith("http")) server = `http://${server}`;
-    const userLnbits = lnbits({
-      adminKey: "dummyValue",
-      invoiceReadKey: invoiceKey,
-      endpoint: server,
-    });
-    const status = await userLnbits.wallet.checkInvoice({
-      payment_hash: paymentHash
-    }) as unknown as { paid: boolean };
-    return status.paid;
   }
 
   getAddr(): Promise<string> {
