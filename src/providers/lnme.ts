@@ -67,6 +67,7 @@ export class LnMeProvider implements IProvider {
           },
         }
       );
+      console.log(res);
       return await res.json();
   }
 

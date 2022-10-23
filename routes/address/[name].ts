@@ -10,12 +10,13 @@ export const handler: Handlers = {
     const proxyTarget = await mainLogic.getProxyTarget(username);
     if (proxyTarget) {
       const provider = await providers.getProvider(proxyTarget.provider);
-      return new Response(await provider.getAddr({
+      const address = await provider.getAddr({
         target: proxyTarget.target,
         username,
         host: url.host,
         proto: url.protocol,
-      }), {
+      });
+      return new Response(address, {
         headers: {
           "Content-Type": "text/plain",
           "Access-Control-Allow-Origin": "*",
@@ -23,12 +24,11 @@ export const handler: Handlers = {
           "Access-Control-Allow-Headers": "*",
         },
       });
-
     } else {
-      return new Response(JSON.stringify("Not found"), {
+      return new Response("Not found", {
         status: 404,
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "text/plain",
           "Access-Control-Allow-Origin": "*",
           "Access-Control-Allow-Methods": "GET",
           "Access-Control-Allow-Headers": "*",
