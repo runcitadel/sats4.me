@@ -46,8 +46,6 @@ export class LnMeProvider implements IProvider {
 
   async getAddr({
     target: targetUrl,
-    host,
-    proto,
   }: {
     target: string;
     host: string;
@@ -60,14 +58,11 @@ export class LnMeProvider implements IProvider {
         {
           method: "POST",
           headers: {
-            "X-Forwarded-For": host,
-            "X-Forwarded-Proto": proto,
-            "X-Forwarded-Host": host,
             "Content-Type": "application/json",
           },
         }
       );
-      console.log(res);
+      console.log(`${targetUrl}/v1/newaddress`);
       return await res.json();
   }
 
