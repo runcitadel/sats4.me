@@ -9,7 +9,7 @@ export default function SendOnChain(props: SendOnChainProps) {
     "Prefer onchain Bitcoin? Click here!",
   );
   async function getAddress() {
-    if (address === "Prefer onchain Bitcoin? Click here!") return;
+    if (address !== "Prefer onchain Bitcoin? Click here!") return;
     const res = await fetch(
       `/address/${
         encodeURIComponent(props.user)
