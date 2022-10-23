@@ -58,7 +58,6 @@ export class LnMeProvider implements IProvider {
       const res = await fetch(
         `${targetUrl}/v1/newaddress`,
         {
-          method: "POST",
           headers: {
             "X-Forwarded-For": host,
             "X-Forwarded-Proto": proto,
