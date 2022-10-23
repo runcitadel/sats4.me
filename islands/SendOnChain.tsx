@@ -9,12 +9,13 @@ export default function SendOnChain(props: SendOnChainProps) {
     "Prefer onchain Bitcoin? Click here!",
   );
   async function getAddress() {
+    if (address === "Prefer onchain Bitcoin? Click here!") return;
     const res = await fetch(
       `/address/${
         encodeURIComponent(props.user)
       }`,
     );
-    setAddress(await res.text());
+    setAddress(await res.json());
   }
   return (
     <a
@@ -22,7 +23,7 @@ export default function SendOnChain(props: SendOnChainProps) {
         event.preventDefault();
         getAddress();
       }}
-      class="text-base block"
+      class="text-base block cursor-pointer"
     >
       {address}
     </a>
