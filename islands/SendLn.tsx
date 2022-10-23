@@ -8,20 +8,20 @@ export interface SendLnProps {
 export default function SendLn(props: SendLnProps) {
   const [amount, setAmount] = useState<number | undefined>();
   const [memo, setMemo] = useState<string | undefined>();
+  const [invoice, setInvoice] = useState<string | undefined>();
   async function sendSats() {
     const res = await fetch(`/callback/${encodeURIComponent(props.user)}?amount=${amount}&memo=${memo}`);
     const invoice = (await res.json()).pr;
-      try {
+    try {
       const webln = await requestProvider();
       await webln.enable();
       await webln.sendPayment(invoice);
     } catch {
-      // TODO: Display invoice
-      alert("WebLN not enabled");
+      setInvoice(invoice);
     }
   }
   return (
-    <p>
+    {invoice ? <p>Thank you! <a href={`lightning:${invoice}`}>{invoice}</a></p> : <p>
       Send me<br />
       <input
         type="number"
@@ -50,6 +50,6 @@ export default function SendLn(props: SendLnProps) {
         }}
       />
       <button class="rounded-full py-2 px-8 bg-blue-500 text-3xl w-5/6 mt-4" onClick={() => sendSats()}>⚡ Send ⚡</button>
-    </p>
+    </p>}
   );
 }
