@@ -58,6 +58,7 @@ export class LnMeProvider implements IProvider {
       const res = await fetch(
         `${targetUrl}/v1/newaddress`,
         {
+          method: "POST",
           headers: {
             "X-Forwarded-For": host,
             "X-Forwarded-Proto": proto,
@@ -66,7 +67,7 @@ export class LnMeProvider implements IProvider {
           },
         }
       );
-      return await res.text();
+      return await res.json();
   }
 
   async isPaid(targetUrl: string, paymentHash: string) {

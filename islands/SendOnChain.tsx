@@ -15,7 +15,7 @@ export default function SendOnChain(props: SendOnChainProps) {
       const res = await fetch(
         `/address/${encodeURIComponent(props.user)}`,
       );
-      setAddress(await res.json());
+      setAddress(await res.text());
     } catch {
       setAddress("Failed to get an on-chain address!");
       setTimeout(() => {
