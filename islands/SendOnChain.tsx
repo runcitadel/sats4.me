@@ -10,12 +10,18 @@ export default function SendOnChain(props: SendOnChainProps) {
   );
   async function getAddress() {
     if (address !== "Prefer onchain Bitcoin? Click here!") return;
-    const res = await fetch(
-      `/address/${
-        encodeURIComponent(props.user)
-      }`,
-    );
-    setAddress(await res.json());
+    setAddress("Loading...");
+    try {
+      const res = await fetch(
+        `/address/${encodeURIComponent(props.user)}`,
+      );
+      setAddress(await res.json());
+    } catch {
+      setAddress("Failed to get an on-chain address!");
+      setTimeout(() => {
+        setAddress("Prefer onchain Bitcoin? Click here!");
+      }, 1500);
+    }
   }
   return (
     <a
