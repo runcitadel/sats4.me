@@ -10,7 +10,7 @@ export const handler: Handlers = {
         if (proxyTarget) {
             return new Response(JSON.stringify({
                 status: "OK",
-                callback: `${url.protocol}://${url.host}/callback/${username}`,
+                callback: `${url.protocol}//${url.host}/callback/${username}`,
                 tag: "payRequest",
                 // TODO: Cache these limits from remote server
                 // We don't do a fetch() here to increase response speed
