@@ -26,16 +26,10 @@ export class LnMeProvider implements IProvider {
     const res = await fetch(
       `${targetUrl}/.well-known/lnurlp/?amount=${amountMsat}&comment=${comment || description}`,
       {
-        body: JSON.stringify({
-          memo: description,
-          value: Math.round(amountMsat / 1000)
-        }),
-        method: "POST",
         headers: {
           "X-Forwarded-For": host,
           "X-Forwarded-Proto": proto,
           "X-Forwarded-Host": host,
-          "Content-Type": "application/json",
         },
       }
     );
