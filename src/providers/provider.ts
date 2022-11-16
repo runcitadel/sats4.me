@@ -11,6 +11,7 @@ export interface IProvider {
     host: string;
     proto: string;
     comment: string;
+    description: string;
   }): Promise<{
     bolt11: string;
     paymentHash: string;
