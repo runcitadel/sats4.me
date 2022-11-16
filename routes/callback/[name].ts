@@ -23,6 +23,7 @@ export const handler: Handlers = {
                     host: url.host,
                     proto: url.protocol,
                     comment,
+                    description: `Sats for ${username}@${url.host}`,
                 })).bolt11,
             }), {
                 headers: {
