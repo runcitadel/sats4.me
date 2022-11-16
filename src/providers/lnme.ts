@@ -24,7 +24,7 @@ export class LnMeProvider implements IProvider {
     if (!targetUrl.startsWith("http"))
       targetUrl = `https://${targetUrl}`;
     const res = await fetch(
-      `${targetUrl}/v1/invoices`,
+      `${targetUrl}/.well-known/lnurlp/?amount=${amountMsat}&comment=${comment || description}`,
       {
         body: JSON.stringify({
           memo: description,
