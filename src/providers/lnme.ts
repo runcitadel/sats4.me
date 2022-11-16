@@ -13,6 +13,7 @@ export class LnMeProvider implements IProvider {
     host,
     proto,
     description,
+    name,
   }: {
     target: string;
     amountMsat: number;
@@ -20,11 +21,12 @@ export class LnMeProvider implements IProvider {
     host: string;
     proto: string;
     description: string;
+    name: string;
   }) {
     if (!targetUrl.startsWith("http"))
       targetUrl = `https://${targetUrl}`;
     const res = await fetch(
-      `${targetUrl}/.well-known/lnurlp/?amount=${amountMsat}&comment=${comment || description}`,
+      `${targetUrl}/.well-known/lnurlp/${name}?amount=${amountMsat}&comment=${comment || description}`,
       {
         headers: {
           "X-Forwarded-For": host,
