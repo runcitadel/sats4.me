@@ -12,12 +12,14 @@ export class LnMeProvider implements IProvider {
     comment,
     host,
     proto,
+    description,
   }: {
     target: string;
     amountMsat: number;
     comment: string;
     host: string;
     proto: string;
+    description: string;
   }) {
     if (!targetUrl.startsWith("http"))
       targetUrl = `https://${targetUrl}`;
@@ -25,7 +27,7 @@ export class LnMeProvider implements IProvider {
       `${targetUrl}/v1/invoices`,
       {
         body: JSON.stringify({
-          memo: comment,
+          memo: description,
           value: Math.round(amountMsat / 1000)
         }),
         method: "POST",
