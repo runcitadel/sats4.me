@@ -36,10 +36,10 @@ export class LnMeProvider implements IProvider {
       }
     );
     const data = await res.json();
-    console.log(data);
+    //console.log(data);
     return {
-      paymentHash: data.payment_hash,
-      bolt11: data.payment_request,
+      paymentHash: false,
+      bolt11: data.pr,
     };
   }
 
