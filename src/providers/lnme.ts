@@ -35,6 +35,7 @@ export class LnMeProvider implements IProvider {
         },
       }
     );
+    console.log(`${targetUrl}/.well-known/lnurlp/${username}?amount=${amountMsat}&comment=${comment || description}`);
     const data = await res.json();
     //console.log(data);
     return {
